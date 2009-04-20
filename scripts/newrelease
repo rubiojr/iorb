@@ -1,0 +1,7 @@
+#!/bin/sh
+VERSION=0.2.`ruby -e 'puts Time.now.strftime("%Y%m%d%H%M%S")'`
+echo $VERSION
+sed -i bak "s/VERSION .*$/VERSION = \"$VERSION\"/" lib/iorb.rb
+rm lib/iorb.rbbak
+rm pkg/*.gem
+rake gem
