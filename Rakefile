@@ -1,10 +1,9 @@
 require 'rake'
 $:.unshift(File.dirname(__FILE__) + "/lib")
 require 'hoe'
+require 'iorb'
 
-IORB_VERSION = '0.1'
-
-Hoe.new('iorb', IORB_VERSION) do |p|
+Hoe.new('iorb', IORB::VERSION) do |p|
   p.name = "iorb"
   p.author = "Sergio Rubio"
   p.description = %q{drop.io CLI interface}
