@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{iorb}
-  s.version = "0.1"
+  s.version = "0.2.20090420182616"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergio RubioSergio Rubio"]
@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = %q{sergio@rubio.namesergio@rubio.name}
   s.executables = ["iorb"]
   s.extra_rdoc_files = ["History.txt", "Manifest.txt", "README.txt"]
-  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "bin/iorb"]
+  s.files = ["History.txt", "Manifest.txt", "README.txt", "Rakefile", "bin/iorb", "dropio-ruby-api-examples/basic_client.rb", "dropio-ruby-api-examples/find_drop.rb", "dropio-ruby-api-examples/find_my_drop.rb", "iorb.gemspec", "lib/iorb.rb", "scripts/newrelease"]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/rubiojr/iorb}
   s.rdoc_options = ["--main", "README.txt"]
