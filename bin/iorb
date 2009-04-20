@@ -1,0 +1,135 @@
+#!/usr/bin/env ruby
+# API Docs http://groups.google.com/group/dropio-api/web/full-api-documentation
+require 'rubygems'
+require 'dropio'
+require 'choice'
+include Dropio
+
+# Code stolen from:
+# http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/
+#
+class MacClipboard
+  class << self
+    def read
+      IO.popen('pbpaste') {|clipboard| clipboard.read}
+    end
+    def write(stuff)
+      IO.popen('pbcopy', 'w+') {|clipboard| clipboard.write(stuff)}
+    end
+  end
+end
+
+API_KEY_FILE = "#{ENV['HOME']}/.iorbrc"
+
+if not File.exist?(API_KEY_FILE)
+  $stderr.puts "\nAPI key file not found in #{API_KEY_FILE}"
+  $stderr.puts "Add it first:\n\n"
+  $stderr.puts "  echo 'your-api-key' > ~/.iorbrc\n\n"
+  exit 1
+end
+
+Choice.options do
+  header ''
+  header 'Available options:'
+
+
+  option :drop_name do
+    short '-n'
+    long  '--drop-name=DROP_NAME'
+  end
+  
+  option :find_drop do
+    short '-f'
+    long '--find=NAME'
+    desc 'Find a drop matching NAME'
+  end
+
+  option :create do
+    short '-c'
+    long '--create *FILES'
+    desc 'Create a drop and add FILES to it'
+  end
+
+  option :expiration_length do
+    short '-e'
+    long  '--expiration-length LENGTH'
+    desc  'Drop expiration length. (1 week by default)'
+    default '1_WEEK_FROM_NOW'
+  end
+  
+  option :drop_description do
+    short '-d'
+    long  '--description'
+    desc  'Drop description (Optional)'
+  end
+end
+  
+API_KEY = IO.readlines(API_KEY_FILE)[0].strip.chomp
+if API_KEY.nil?
+  $stderr.puts "Invalid API key in #{API_KEY_FILE}"
+  exit
+end
+
+Dropio.api_key = API_KEY
+
+def find_drop(name)
+  Drop.find(name)
+end
+
+drop_name = Choice.choices.drop_name
+if Choice.choices.create
+  files = Choice.choices.create
+  if files.size > 0
+    options = {
+      :expiration_length => Choice.choices.expiration_length,
+      :description => 'foo stuff',
+      :guests_can_add => false,
+      :guests_can_comment => false
+    }
+    if Choice.choices.drop_name
+      options.merge!({ :name => Choice.choices.drop_name.strip.chomp })
+    end
+    drop = Drop.create(options)
+    
+    puts "\nDrop created.\n\n"
+    #
+    # Drop details
+    #
+    drop.email
+    puts "Name:                 #{drop.name}"
+    puts "Drop Email:           #{drop.email}"
+    puts "URL:                  http://drop.io/#{drop.name}"
+    puts "Max Bytes:            #{drop.max_bytes}"
+    puts "Admin Token:          #{drop.admin_token}"
+    puts "Hidden Upload URL:    #{drop.hidden_upload_url}"
+    # Get the admin URL
+    puts "Admin URL:            #{drop.generate_url}"
+
+    files.each do |f|
+      if not File.exist?(f)
+        $stderr.puts "File #{f} does not exist, skipping."
+        next
+      end
+      drop.add_file(f)
+      puts "File #{f} added."
+    end
+    if PLATFORM =~ /.*darwin*/
+      MacClipboard.write "http://drop.io/#{drop.name}"
+      puts "\nPublic URL copied to the clipboard."
+    end
+  end
+elsif Choice.choices.find_drop
+  begin
+    drop = find_drop(Choice.choices.find_drop)
+    puts "Drop name:           #{drop.name}"
+    puts "Drop URL:            http://drop.io/#{drop.name}"
+    puts "Max Bytes:           #{drop.max_bytes}"
+  rescue Dropio::MissingResourceError
+    $stderr.puts "Drop '#{Choice.choices.find_drop}' does not exist"
+  rescue Dropio::AuthorizationError
+    $stderr.puts "This drop is private."
+  end
+else
+  $stderr.puts "\nInvalid command. Either --add or --find is mandatory.\n\n"
+  puts Choice.help
+end
