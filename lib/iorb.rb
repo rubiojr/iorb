@@ -1,5 +1,7 @@
+require 'highline/import'
+
 module IORB
-  VERSION = '0.2'
+  VERSION = "0.2.20090421102937"
   module Util
     # Code stolen from:
     # http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/
@@ -41,11 +43,12 @@ module IORB
 
     def self.check
       if not File.exist?(self.file)
-        File.open(self.file, 'w') do |f|
-          f.puts({ 'api-key' => 'your_api_key_here' }.to_yaml)
-        end
         $stderr.puts "\niorb config file missing, creating one."
-        $stderr.puts "Edit #{self.file} and add your api key there.\n\n"
+        key = ask("Paste you drop.io api key: ") { |q| q.echo = '*' }
+        File.open(self.file, 'w') do |f|
+          f.puts({ 'api-key' => (key.strip.chomp || 'invalid') }.to_yaml)
+        end
+        $stderr.puts "\nConfig file #{self.file} created.\n\n"
         exit 1
       end
     end

@@ -16,7 +16,15 @@ Choice.options do
   header ''
   header 'Available options:'
 
-
+  option :version do
+    long '--version'
+    short '-v'
+    desc 'Show iorb version'
+    action do
+      puts "iorb version #{IORB::VERSION}"
+      exit
+    end
+  end
   option :no_save do
     long '--no-save'
   end
@@ -25,6 +33,12 @@ Choice.options do
     short '-f'
     long '--find=NAME'
     desc 'Find a drop matching NAME'
+  end
+
+  option :list do
+    short '-l'
+    long '--list=NAME'
+    desc 'List assets in drop NAME'
   end
 
   option :create do
@@ -167,7 +181,28 @@ elsif Choice.choices.mydrops
   IORB::DropManager.each do |d|
     puts d['name']
   end
+elsif Choice.choices.list
+  drop_name = Choice.choices.list
+  drop_details = IORB::DropManager.find(drop_name)
+  token = nil
+  token = drop_details['admin-token'] if drop_details
+  begin
+    drop = Drop.find(drop_name, token)
+    drop.assets.each do |a|
+      puts "Asset name:         #{a.name}"
+      puts "Title:              #{a.title}"
+      puts "Created at:         #{a.created_at}"
+      puts "Type:               #{a.type}"
+      puts "File Size:          #{a.filesize}"
+      puts "URL:                http://drop.io/#{drop_name}/asset/#{a.name}"
+      puts "\n"
+    end
+  rescue Dropio::MissingResourceError
+    $stderr.puts "Drop '#{drop_name}' does not exist"
+  rescue Dropio::AuthorizationError
+    $stderr.puts "Authorization error. This drop is private or the admin token is invalid."
+  end
 else
-  $stderr.puts "\nInvalid command. Either --add or --find is mandatory.\n\n"
+  $stderr.puts "\nInvalid command. Either --add, --find or --list are mandatory.\n\n"
   puts Choice.help
 end
