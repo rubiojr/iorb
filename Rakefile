@@ -13,5 +13,6 @@ Hoe.new('iorb', IORB::VERSION) do |p|
   p.remote_rdoc_dir = '' # Release to root
   p.extra_deps << [ "dropio",">= 0.9" ]
   p.extra_deps << [ "highline",">= 1.0" ]
+  p.extra_deps << [ "choice",">= 0.1" ]
   p.developer('Sergio Rubio', 'sergio@rubio.name')
 end
