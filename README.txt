@@ -1,10 +1,12 @@
 = iorb
 
-* http://github.com/rubiojr/iorb
+* http://rubiojr.github.com/
 
 == DESCRIPTION:
 
 http://drop.io CLI interface
+
+You will need a drop.io API key. Get it at http://api.drop.io
 
 == FEATURES/PROBLEMS:
 
@@ -12,9 +14,12 @@ http://drop.io CLI interface
 
 == SYNOPSIS:
 
-  iorb --drop-name foodrop --create file1 [file2] [file3]...
-
-  iorb -h prints help
+  iorb --create [drop_name]
+  iorb --drop-name <drop_name> --add-files file1 file2 ...
+  iorb --list <drop_name>
+  iorb --destroy <drop_name>
+  ...
+  iorb -h
 
 == REQUIREMENTS:
 

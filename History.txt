@@ -2,3 +2,10 @@
 
 * Initial Release
 
+=== 0.3 / 2009-04-21
+
+* Initial public release
+* create/destroy drops
+* list drop assets
+* add files to drops
+

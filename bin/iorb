@@ -154,9 +154,18 @@ elsif Choice.choices.add_files
   drop_name = Choice.choices.drop_name
   if drop_name
     drop_details = IORB::DropManager.find(drop_name)
-    if drop_details.nil?
-      $stderr.puts "Drop #{drop_name} not found in config."
+    if drop_details.nil? or drop_details['admin-token'].nil?
+      $stderr.puts "Drop #{drop_name} not found in config or admin-token invalid."
       exit 1
+    end
+    drop = Drop.find(drop_name, drop_details['admin-token'])
+    Choice.choices.add_files.each do |f|
+      if File.exist?(f)
+        drop.add_file(f)
+        puts "File #{f} added."
+      else
+        $stderr.puts "File #{f} not found, skipping."
+      end
     end
   else
     options = {

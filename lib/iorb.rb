@@ -1,7 +1,7 @@
 require 'highline/import'
 
 module IORB
-  VERSION = "0.2.20090421104931"
+  VERSION = "0.3"
   module Util
     # Code stolen from:
     # http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/
