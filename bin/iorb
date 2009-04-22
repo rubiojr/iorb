@@ -4,12 +4,19 @@ begin
 rescue LoadError
   require 'iorb'
 end
+
+include Dropio
+IORB::Config.check
+if IORB::Config.api_key.nil?
+  $stderr.puts "Invalid API key in #{API_KEY_FILE}"
+  exit
+end
+Dropio.api_key = IORB::Config.api_key
+
 require 'commander'
 Dir["#{File.dirname(__FILE__)}" + '/../lib/iorb/commands/*.rb'].each do |f|
   require f
 end
-
-include Dropio
 
 program :name, 'iorb'
 program :version, IORB::VERSION
@@ -18,12 +25,6 @@ default_command :help
 
 # API Docs http://groups.google.com/group/dropio-api/web/full-api-documentation
 
-IORB::Config.check
-if IORB::Config.api_key.nil?
-  $stderr.puts "Invalid API key in #{API_KEY_FILE}"
-  exit
-end
-Dropio.api_key = IORB::Config.api_key
 
 
 
