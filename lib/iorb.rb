@@ -13,7 +13,7 @@ class Dropio::Asset
   end
 end
 module IORB
-  VERSION = "0.3.91"
+  VERSION = "0.3.92"
   module Util
     # Code stolen from:
     # http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/

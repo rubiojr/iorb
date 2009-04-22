@@ -14,24 +14,48 @@ You will need a drop.io API key. Get it at http://api.drop.io
 
 == SYNOPSIS:
 
+=== Creating drops
   iorb create [drop_name]
+
+=== Adding assets to a drop
+ * Create a named drop and add files to it
   iorb add --drop-name <drop_name>  file1 file2 ...
-  iorb --list <drop_name>
-  iorb --destroy <drop_name>
-  ...
-  iorb -h
+
+ * create a random drop and add files to it
+  iorb add file1 file2 ...
+
+=== Listing assets
+ * list all assets from a drop
+  iorb list <drop_name>
+ * list assets matching regex
+  iorb list <drop_name> --filter '-(mov|mp3)'
+ * list assets matching type
+  iorb list <drop_name> --filter type:audio
+
+=== Destroying drops/assets
+ * destroy a drop
+  iorb destroy <drop_name>
+ * destroy all assets matching pattern from drop 'test_drop'
+  iorb destroy test_drop:/-(mp3|avi)/
+ * destroy all assets from test_drop
+  iorb destroy test_drop:/.*/
 
 == REQUIREMENTS:
 
 * dropio ruby library from Jake Good:
   http://github.com/whoisjake/dropio_api_ruby/tree/master
+* highline from James Edward Gray II:
+  http://rubyforge.org/projects/highline
+* commander from TJ Holowaych:
+  http://github.com/visionmedia/commander
 
 == INSTALL:
 
-1. gem source -a http://iorb.netcorex.org (stable release)
+1. gem source -a http://gems.github.com
+2. gem source -a http://iorb.netcorex.org (stable release)
    OR
    gem source -a http://dev.netcorex.org (unstable release)
-2. gem install iorb
+3. gem install iorb
 
 == LICENSE:
 
