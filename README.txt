@@ -14,8 +14,8 @@ You will need a drop.io API key. Get it at http://api.drop.io
 
 == SYNOPSIS:
 
-  iorb --create [drop_name]
-  iorb --drop-name <drop_name> --add-files file1 file2 ...
+  iorb create [drop_name]
+  iorb add --drop-name <drop_name>  file1 file2 ...
   iorb --list <drop_name>
   iorb --destroy <drop_name>
   ...
@@ -28,8 +28,10 @@ You will need a drop.io API key. Get it at http://api.drop.io
 
 == INSTALL:
 
-1. gem source -a http://gems.github.com
-2. gem install rubiojr-iorb
+1. gem source -a http://iorb.netcorex.org (stable release)
+   OR
+   gem source -a http://dev.netcorex.org (unstable release)
+2. gem install iorb
 
 == LICENSE:
 

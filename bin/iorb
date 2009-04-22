@@ -1,219 +1,29 @@
 #!/usr/bin/env ruby
-# API Docs http://groups.google.com/group/dropio-api/web/full-api-documentation
-require 'rubygems'
-require 'dropio'
-require 'choice'
 begin
   require "#{File.join(File.dirname(__FILE__), '../lib/iorb.rb')}"
 rescue LoadError
   require 'iorb'
 end
+require 'commander'
+Dir["#{File.dirname(__FILE__)}" + '/../lib/iorb/commands/*.rb'].each do |f|
+  require f
+end
+
 include Dropio
 
+program :name, 'iorb'
+program :version, IORB::VERSION
+program :description, 'drop.io command line interface'
+default_command :help
+
+# API Docs http://groups.google.com/group/dropio-api/web/full-api-documentation
+
 IORB::Config.check
-
-Choice.options do
-  header ''
-  header 'Available options:'
-
-  option :version do
-    long '--version'
-    short '-v'
-    desc 'Show iorb version'
-    action do
-      puts "iorb version #{IORB::VERSION}"
-      exit
-    end
-  end
-  option :no_save do
-    long '--no-save'
-  end
-
-  option :find_drop do
-    short '-f'
-    long '--find=NAME'
-    desc 'Find a drop matching NAME'
-  end
-
-  option :list do
-    short '-l'
-    long '--list=NAME'
-    desc 'List assets in drop NAME'
-  end
-
-  option :create do
-    short '-c'
-    long '--create=[NAME]'
-    desc 'Create a drop'
-  end
-
-  option :expiration_length do
-    short '-e'
-    long  '--expiration-length LENGTH'
-    desc  'Drop expiration length. (1 week by default)'
-    default '1_WEEK_FROM_NOW'
-  end
-  
-  option :mydrops do
-    long '--mydrops'
-    desc  'Print the drops I have created'
-  end
-
-  option :save_details do
-    long '--save-details'
-    short '-s'
-    desc  'Save drop details (Needed to admin the drop later)'
-  end
-
-  option :destroy do
-    long '--destroy NAME'
-    short '-d'
-    desc  'Destroy a drop (needs to be defined in the config file)'
-  end
-
-  option :drop_name do
-    long '--drop-name NAME'
-    desc 'Drop name'
-  end
-
-  option :add_files do
-    long '--add-files *FILES'
-    desc 'Add files to a drop (if --drop-name not specified, it will create a new drop)'
-  end
-  
-end
-  
 if IORB::Config.api_key.nil?
   $stderr.puts "Invalid API key in #{API_KEY_FILE}"
   exit
 end
-
 Dropio.api_key = IORB::Config.api_key
 
-if Choice.choices.create
-  name = Choice.choices.create
-  options = {
-    :expiration_length => Choice.choices.expiration_length,
-    :guests_can_add => false,
-    :guests_can_comment => false
-  }
-  if name.is_a? String
-    options.merge!({ :name => name.strip.chomp })
-  end
-  drop = Drop.create(options)
-  
-  puts "\nDrop created.\n\n"
 
-  details = IORB::DropDetails.build_from(drop)
-  details.print
-  details.save if not Choice.choices.no_save
 
-  if PLATFORM =~ /.*darwin*/
-    IORB::Util::MacClipboard.write "http://drop.io/#{drop.name}"
-    puts "\nPublic URL copied to the clipboard."
-  end
-elsif Choice.choices.destroy
-  begin
-    drop_name = Choice.choices.destroy
-    drop_details = IORB::DropManager.find(drop_name)
-    if drop_details.nil? or drop_details['admin-token'].nil?
-      $stderr.puts "Drop details or admin-token not found in #{IORB::Config.file}"
-      exit 1
-    end
-    token = nil
-    token = drop_details['admin-token']
-    drop = Drop.find(drop_name, token)
-    drop.destroy
-    drop_details['destroyed'] = true
-    drop_details.save
-  rescue Dropio::MissingResourceError
-    $stderr.puts "Drop '#{Choice.choices.destroy}' does not exist"
-  rescue Dropio::AuthorizationError
-    $stderr.puts "Authorization error. This drop is private or the admin token is invalid."
-  end
-
-elsif Choice.choices.find_drop
-  begin
-    drop_name = Choice.choices.find_drop
-    drop_details = IORB::DropManager.find(drop_name)
-    token = nil
-    token = drop_details['admin-token'] if drop_details
-    drop = Drop.find(drop_name, token)
-    new_details = IORB::DropDetails.build_from(drop)
-    new_details.print
-    if Choice.choices.save_details
-      puts "\nSaving drop details."
-      new_details.save
-    end
-  rescue Dropio::MissingResourceError
-    $stderr.puts "Drop '#{Choice.choices.find_drop}' does not exist"
-  rescue Dropio::AuthorizationError
-    $stderr.puts "Authorization error. This drop is private or the admin token is invalid."
-  end
-elsif Choice.choices.add_files
-  drop_name = Choice.choices.drop_name
-  if drop_name
-    drop_details = IORB::DropManager.find(drop_name)
-    drop = nil
-    # Add files as a guest
-    if drop_details.nil? or drop_details['admin-token'].nil?
-      drop = Drop.find(drop_name)
-    else
-      drop = Drop.find(drop_name, drop_details['admin-token'])
-    end
-    Choice.choices.add_files.each do |f|
-      if File.exist?(f)
-        drop.add_file(f)
-        puts "File #{f} added."
-      else
-        $stderr.puts "File #{f} not found, skipping."
-      end
-    end
-  else
-    options = {
-      :expiration_length => Choice.choices.expiration_length,
-      :guests_can_add => false,
-      :guests_can_comment => false
-    }
-    drop = Drop.create(options)
-    IORB::DropDetails.build_from(drop).save if not Choice.choices.no_save
-    puts "\nDrop #{drop.name} created.\n\n"
-
-    Choice.choices.add_files.each do |f|
-      if File.exist?(f)
-        drop.add_file(f)
-        puts "File #{f} added."
-      else
-        $stderr.puts "File #{f} not found, skipping."
-      end
-    end
-  end
-elsif Choice.choices.mydrops
-  IORB::DropManager.each do |d|
-    puts d['name']
-  end
-elsif Choice.choices.list
-  drop_name = Choice.choices.list
-  drop_details = IORB::DropManager.find(drop_name)
-  token = nil
-  token = drop_details['admin-token'] if drop_details
-  begin
-    drop = Drop.find(drop_name, token)
-    drop.assets.each do |a|
-      puts "Asset name:         #{a.name}"
-      puts "Title:              #{a.title}"
-      puts "Created at:         #{a.created_at}"
-      puts "Type:               #{a.type}"
-      puts "File Size:          #{a.filesize}"
-      puts "URL:                http://drop.io/#{drop_name}/asset/#{a.name}"
-      puts "\n"
-    end
-  rescue Dropio::MissingResourceError
-    $stderr.puts "Drop '#{drop_name}' does not exist"
-  rescue Dropio::AuthorizationError
-    $stderr.puts "Authorization error. This drop is private or the admin token is invalid."
-  end
-else
-  $stderr.puts "\nInvalid command. Either --add, --find or --list are mandatory.\n\n"
-  puts Choice.help
-end

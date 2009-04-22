@@ -1,7 +1,19 @@
+require 'rubygems'
 require 'highline/import'
+require 'dropio'
 
+class Dropio::Asset
+  def print_details
+    puts "Asset name:         #{self.name}"
+    puts "Title:              #{self.title}"
+    puts "Created at:         #{self.created_at}"
+    puts "Type:               #{self.type}"
+    puts "File Size:          #{self.filesize}"
+    puts "URL:                http://drop.io/#{self.drop.name}/asset/#{self.name}"
+  end
+end
 module IORB
-  VERSION = "0.3.3"
+  VERSION = "0.3.91"
   module Util
     # Code stolen from:
     # http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/
@@ -63,6 +75,10 @@ module IORB
   end
 
   class DropDetails < Hash
+
+    def method_missing(id, *args)
+      self[id.to_s.gsub('_', '-')] || super
+    end
 
     def self.build_from(drop)
       details = DropDetails.new
