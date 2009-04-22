@@ -18,8 +18,8 @@ You will need a drop.io API key. Get it at http://api.drop.io
   iorb create [drop_name]
 
 === Adding assets to a drop
- * Create a named drop and add files to it
-  iorb add --drop-name <drop_name>  file1 file2 ...
+ * Add files to an existing drop
+ iorb add --drop-name <drop_name>  file1 file2 ...
 
  * create a random drop and add files to it
   iorb add file1 file2 ...

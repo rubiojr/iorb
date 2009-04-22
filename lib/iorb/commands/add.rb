@@ -38,6 +38,8 @@ command :add do |c|
       $stderr.puts "Drop/Asset does not exist"
     rescue Dropio::AuthorizationError
       $stderr.puts "Authorization error. This drop is private or the admin token is invalid."
+    rescue JSON::ParserError
+      $stderr.puts "Cannot add asset to the specified drop. Guest uploads not allowed."
     end
   end
 end

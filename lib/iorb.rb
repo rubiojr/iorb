@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'highline/import'
 require 'dropio'
+require 'json'
 
 class Dropio::Asset
   def print_details
@@ -13,7 +14,7 @@ class Dropio::Asset
   end
 end
 module IORB
-  VERSION = "0.3.93"
+  VERSION = "0.3.94"
   module Util
     # Code stolen from:
     # http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/
