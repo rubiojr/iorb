@@ -15,7 +15,7 @@ class Dropio::Asset
   end
 end
 module IORB
-  VERSION = "0.3.96"
+  VERSION = "0.3.98"
   module Util
     # Code stolen from:
     # http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/
@@ -92,6 +92,13 @@ module IORB
         details['public-url'] = "http://drop.io/#{drop.name}"
         details['hidden-uploads'] = drop.hidden_upload_url
         details['max-bytes'] = drop.max_bytes
+        details['password'] = drop.password
+        details['admin-password'] = drop.admin_password
+        details['expiration-length'] = drop.expiration_length
+        details['guests-can-add'] = drop.guests_can_add
+        details['guests-can-comment'] = drop.guests_can_comment
+        details['guests-can-delete'] = drop.guests_can_delete
+        details['current-bytes'] = drop.current_bytes
       else
         details['name'] = drop['name']
         details['email'] = drop['email']
@@ -100,6 +107,14 @@ module IORB
         details['public-url'] = "http://drop.io/#{drop['name']}"
         details['hidden-uploads'] = drop['hidden-uploads']
         details['max-bytes'] = drop['max-bytes']
+        details['created-at'] = drop['created-at']
+        details['password'] = drop['password']
+        details['admin-password'] = drop['admin-password']
+        details['expiration-length'] = drop['expiration-length']
+        details['guests-can-add'] = drop['guests-can-add']
+        details['guests-can-comment'] = drop['guests-can-comment']
+        details['guests-can-delete'] = drop['guests-can-delete']
+        details['current-bytes'] = drop['current-bytes']
       end
       details
     end
@@ -111,6 +126,7 @@ module IORB
       puts "Max Bytes:            #{self['max-bytes']}"
       puts "Admin Token:          #{self['admin-token']}"
       puts "Hidden Upload URL:    #{self['hidden-uploads']}"
+      puts "Created at:           #{self['created-at'] || 'unknown'}"
       # Get the admin URL
       puts "Admin URL:            #{self['admin-url']}"
     end
