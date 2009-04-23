@@ -1,0 +1,21 @@
+THANKS:
+-------
+To the drop.io team. They gave me a warm welcome,
+encouragement and some freebies!
+The drop.io api and their web app is awesome.
+
+To all the ruby developers around the world. They give us
+code and building blocks to have some fun developing software.
+Their effort is really appreciated.
+
+To the github.com team. github really rocks!
+A must for open source developers.
+
+REFERENCES:
+-----------
+http://drop.io
+http://github.com
+http://github.com/visionmedia/commander
+http://github.com/whoisjake/dropio_api_ruby
+http://highline.rubyforge.org
+

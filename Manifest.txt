@@ -2,6 +2,7 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
+THANKS.txt
 bin/iorb
 dropio-ruby-api-examples/add_files.rb
 dropio-ruby-api-examples/basic_client.rb

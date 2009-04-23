@@ -12,12 +12,11 @@ Hoe.new('iorb', IORB::VERSION) do |p|
   p.url = "http://github.com/rubiojr/iorb"
   p.remote_rdoc_dir = '' # Release to root
   p.extra_deps << [ "dropio",">= 0.9" ]
-  p.extra_deps << [ "highline" ]
   p.extra_deps << [ "visionmedia-commander",">= 3.2" ]
   p.developer('Sergio Rubio', 'sergio@rubio.name')
 end
 
 task :publish_dev_gem do
   `scp pkg/*.gem dev.netcorex.org:/srv/www/dev.netcorex.org/gems/`
-  `ssh dev.netcorex.org gem generate_index -d /srv/www/dev.netcorex.org/`
+  `ssh dev.netcorex.org /opt/ruby/bin/gem generate_index -d /srv/www/dev.netcorex.org/`
 end
