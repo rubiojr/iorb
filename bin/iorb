@@ -21,6 +21,26 @@ end
 program :name, 'iorb'
 program :version, IORB::VERSION
 program :description, 'drop.io command line interface'
+program :help, 'Examples', """
+    * Create a drop named 'mydrop'
+      iorb create mydrop
+    
+    * Add file1, file2, ... to drop 'mydrop'
+      iorb add --drop-name mydrop file1 file2 ...      
+      
+    * Create a drop named mydrop and set some properties
+      iorb create mydrop --password private --expiration-length 1_YEAR_FROM_NOW                             
+    * Create a drop and add files to it
+      iorb create mydrop --files file1 file2 ..
+
+    * List 'mydrop' audio assets
+      iorb list mydrop --filter type:audio
+      
+    * Destroy drop 'mydrop'
+      iorb destroy mydrop
+
+  Get more examples at http://iorb.netcorex.org/examples
+"""
 default_command :help
 
 # API Docs http://groups.google.com/group/dropio-api/web/full-api-documentation

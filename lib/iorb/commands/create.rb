@@ -2,9 +2,9 @@ command :create do |c|
   c.description = 'Create a new drop'
   c.option '--expiration-length LENGTH', String, 'Drop expiration length'
   c.option '--save YES/NO', TrueClass, 'Save the drop info to the config file (defaut: yes)'
-  c.option '--guests-can-comment YES/NO', TrueClass, 'Guest can add comments (defaut: yes)'
-  c.option '--guests-can-add YES/NO', TrueClass, 'Guest can add to this drop (defaut: yes)'
-  c.option '--guests-can-delete YES/NO', TrueClass, 'Guest can delete assets in this drop (defaut: yes)'
+  c.option '--guests-can-comment YES/NO', String, 'Guest can add comments (defaut: yes)'
+  c.option '--guests-can-add YES/NO', String, 'Guest can add to this drop (defaut: yes)'
+  c.option '--guests-can-delete YES/NO', String, 'Guest can delete assets in this drop (defaut: yes)'
   c.option '--admin-password PASSWORD', String, 'Admin password to manage this drop (defaut: none)'
   c.option '--password PASSWORD', String, 'Password to access this drop (defaut: none)'
   c.option '--premium-code CODE', String, 'Premium code to apply to the drop (defaut: none)'
@@ -20,9 +20,9 @@ command :create do |c|
     drop_options = {
       :name => drop_name,
       :expiration_length => options.expiration_length,
-      :guests_can_add => options.guest_can_add,
-      :guests_can_comment => options.guest_can_comment,
-      :guests_can_delete => options.guest_can_delete,
+      :guests_can_add => (options.guests_can_add =~ /^yes|y$/ ? true : false),
+      :guests_can_comment => (options.guests_can_comment =~ /^yes|y$/ ? true : false),
+      :guests_can_delete => (options.guests_can_delete =~ /^yes|y$/ ? true : false),
       :admin_password => options.admin_password,
       :password => options.password,
       :premium_code => options.premium_code

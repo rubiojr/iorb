@@ -7,12 +7,12 @@ command :info do |c|
       begin
         drop_name = args.first
         details = IORB::DropManager.find(drop_name)
-        if details
-          details.print
-        else
-          drop = Drop.find(args.first)
-          IORB::DropDetails.build_from(drop).print
-        end
+        admin_token = nil
+        admin_token = details.admin_token if details
+        drop = Drop.find(args.first, admin_token)
+        details = IORB::DropDetails.build_from(drop)
+        details.save
+        details.print
       rescue Dropio::MissingResourceError
         $stderr.puts "Drop/Asset does not exist"
       rescue Dropio::AuthorizationError

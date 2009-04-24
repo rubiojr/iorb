@@ -129,6 +129,10 @@ module IORB
       puts "Created at:           #{self['created-at'] || 'unknown'}"
       # Get the admin URL
       puts "Admin URL:            #{self['admin-url']}"
+      puts "Guests can:"
+      puts "  add     #{self['guests-can-add'] ? '*' : ''}"
+      puts "  comment #{self['guests-can-comment'] ? '*' : ''}"
+      puts "  delete  #{self['guests-can-delete'] ? '*' : ''}"
     end
 
     def save
