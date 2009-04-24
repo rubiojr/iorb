@@ -15,3 +15,5 @@
 * listing assets from drops now support filtering (regexp)
 * destroy assets matching a given filter
 * implemented info command
+* help system improved
+* new website http://iorb.netcorex.org

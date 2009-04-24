@@ -1,6 +1,6 @@
-= iorb
+== WEBSITE
 
-* http://rubiojr.github.com/
+* http://iorb.netcorex.org/
 
 == DESCRIPTION:
 
@@ -13,6 +13,8 @@ You will need a drop.io API key. Get it at http://api.drop.io
 * Many things not yet implemented
 
 == SYNOPSIS:
+
+Getting started tutorial: http://iorb.netcorex.org/tutorial
 
 === Creating drops
   iorb create [drop_name]
