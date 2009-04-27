@@ -20,3 +20,7 @@ task :publish_dev_gem do
   `scp pkg/*.gem dev.netcorex.org:/srv/www/dev.netcorex.org/gems/`
   `ssh dev.netcorex.org /opt/ruby/bin/gem generate_index -d /srv/www/dev.netcorex.org/`
 end
+task :publish_gem do
+  `scp pkg/*.gem iorb.netcorex.org:/srv/www/iorb.netcorex.org/gems/`
+  `ssh iorb.netcorex.org /opt/ruby/bin/gem generate_index -d /srv/www/iorb.netcorex.org/`
+end
