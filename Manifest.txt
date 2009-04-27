@@ -17,5 +17,7 @@ lib/iorb/commands/create.rb
 lib/iorb/commands/destroy.rb
 lib/iorb/commands/info.rb
 lib/iorb/commands/list.rb
+lib/iorb/commands/mail.rb
 lib/iorb/commands/mydrops.rb
+lib/iorb/commands/send_to_drop.rb
 scripts/newrelease
