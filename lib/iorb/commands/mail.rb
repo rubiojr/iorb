@@ -1,6 +1,4 @@
 def mail_asset(drop_name, asset_name, emails, message = nil)
-  HighLine.track_eof = false
-  $stdout.sync = true
   details = IORB::DropManager.find(drop_name)
   regex = false
   if asset_name =~ /^\/.*\/$/
