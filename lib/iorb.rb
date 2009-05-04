@@ -15,7 +15,7 @@ class Dropio::Asset
   end
 end
 module IORB
-  VERSION = "0.5.1"
+  VERSION = "0.5.2"
   module Util
     # Code stolen from:
     # http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/
