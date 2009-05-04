@@ -17,3 +17,7 @@
 * implemented info command
 * help system improved
 * new website http://iorb.netcorex.org
+
+=== 0.5 / 2009-05-04
+
+* added mail, send_to_drop and update commands
