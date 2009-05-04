@@ -37,6 +37,10 @@ command :mail do |c|
   c.option '--addresses ADDRESSES', 'Destination email addresses (separated by comma)'
   c.option '--message MESSAGE', 'Optional message'
   c.when_called do |args, options|
+    if options.addresses.nil?
+      $stderr.puts 'No email specified. --addresses is required'
+      abort
+    end
     param = args.first
     drop_name = nil
     asset = nil
