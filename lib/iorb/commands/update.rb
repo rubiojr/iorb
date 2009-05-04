@@ -8,8 +8,14 @@ command :update do |c|
   c.option '--admin-password PASSWORD', String, 'Admin password to manage this drop (defaut: none)'
   c.option '--password PASSWORD', String, 'Password to access this drop (defaut: none)'
   c.option '--premium-code CODE', String, 'Premium code to apply to the drop (defaut: none)'
+  c.syntax = 'Usage: iorb update <drop_name> [options]'
   c.when_called do |args, drop_options|
     drop_name = args.first
+    if drop_name.nil?
+      $stderr.puts 'Invalid drop name'
+      $stderr.puts c.syntax
+      abort
+    end
     begin
       details = IORB::DropManager.find(drop_name)
       drop = Drop.find(drop_name, details.admin_token )

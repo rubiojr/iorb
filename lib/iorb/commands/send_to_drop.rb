@@ -41,7 +41,7 @@ command :send_to_drop do |c|
     asset = nil
     if options.target_drop.nil?
       $stderr.puts '--target-drop not specified'
-      break
+      abort
     end
     if param =~ /^\w+:.*/
       drop_name, asset = param.split(':')
