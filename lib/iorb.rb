@@ -15,7 +15,7 @@ class Dropio::Asset
   end
 end
 module IORB
-  VERSION = "0.5.3"
+  VERSION = "0.5.90"
   module Util
     # Code stolen from:
     # http://evan.tiggerpalace.com/2008/04/26/pastie-from-the-mac-clipboard/
@@ -148,4 +148,21 @@ module IORB
     end
   end
 
+end
+
+#
+# inject each_file to Dropio::Drop class
+#
+module Dropio
+  class Drop
+    def each_file
+      open(rss) do |f|
+          f.readlines.each do |l|
+            if l =~ /<enclosure .*url="(.*)"\/>/
+              yield $1
+            end
+          end
+      end
+    end
+  end
 end
