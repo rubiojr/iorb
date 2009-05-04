@@ -20,4 +20,5 @@ lib/iorb/commands/list.rb
 lib/iorb/commands/mail.rb
 lib/iorb/commands/mydrops.rb
 lib/iorb/commands/send_to_drop.rb
+lib/iorb/commands/update.rb
 scripts/newrelease
