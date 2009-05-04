@@ -39,7 +39,7 @@ program :help, 'Examples', """
     * Destroy drop 'mydrop'
       iorb destroy mydrop
 
-  Get more examples at http://iorb.netcorex.org/examples
+  Get more examples at http://iorb.netcorex.org/tutorial
 """
 default_command :help
 
