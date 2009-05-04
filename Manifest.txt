@@ -15,6 +15,7 @@ lib/iorb.rb
 lib/iorb/commands/add.rb
 lib/iorb/commands/create.rb
 lib/iorb/commands/destroy.rb
+lib/iorb/commands/download.rb
 lib/iorb/commands/info.rb
 lib/iorb/commands/list.rb
 lib/iorb/commands/mail.rb
