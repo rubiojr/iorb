@@ -8,7 +8,7 @@ command :update do |c|
   c.option '--admin-password PASSWORD', String, 'Admin password to manage this drop (defaut: none)'
   c.option '--password PASSWORD', String, 'Password to access this drop (defaut: none)'
   c.option '--premium-code CODE', String, 'Premium code to apply to the drop (defaut: none)'
-  c.syntax = 'Usage: iorb update <drop_name> [options]'
+  c.syntax = 'iorb update <drop_name> [options]'
   c.when_called do |args, drop_options|
     drop_name = args.first
     if drop_name.nil?

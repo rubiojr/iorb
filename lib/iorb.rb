@@ -79,6 +79,9 @@ module IORB
   class DropDetails < Hash
 
     def method_missing(id, *args)
+      if id.eql?(:admin_token) and self[id.to_s.gsub('_', '-')].nil?
+        return nil
+      end
       self[id.to_s.gsub('_', '-')] || super
     end
 
