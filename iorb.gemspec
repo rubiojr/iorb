@@ -1,6 +1,3 @@
-(in /Users/rubiojr/Work/github/iorb)
-# -*- encoding: utf-8 -*-
-
 Gem::Specification.new do |s|
   s.name = %q{iorb}
   s.version = "0.5.3"
